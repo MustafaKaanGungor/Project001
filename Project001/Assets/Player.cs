@@ -61,6 +61,8 @@ public class Player : MonoBehaviour
     public void engineController()
     {
         //TODO: Motor açıp kapamayı tek tuşa indirge
+        //TODO: Motorun açılışına gecikme ekle https://www.youtube.com/watch?v=Qt5KPNmKglM
+        //TODO: Motor açılırken pilotların check konuşmalarını ekle
         if(Input.GetKey(KeyCode.I)) 
         {
             engine = true;
@@ -73,6 +75,7 @@ public class Player : MonoBehaviour
 
     public void liftingEngineThrust()
     {
+        //TODO: Motor hasarına göre motor gücünü azaltma ekle
         if(engine == true)
         {
         playerRB.AddForce(Vector2.up * liftingEnginePower);
@@ -81,6 +84,7 @@ public class Player : MonoBehaviour
 
     public void verticalControl()
     {
+        //TODO: Motor hasarına göre motor gücünü azaltma ekle
         if(moveInput.y > 0)
         {
             playerRB.AddForce(Vector2.up * verticalEnginePower);
@@ -108,10 +112,14 @@ public class Player : MonoBehaviour
         if(transform.eulerAngles.z > 180)
         {
             playerRB.AddForce(Vector2.left * (transform.eulerAngles.z - 360f) * 0.1f);
+            playerRB.AddForce(Vector2.up * (transform.eulerAngles.z - 360f) * 0.01f);
+            transform.Rotate(rotationAngle, 1f * Time.deltaTime);
         }
         if(transform.eulerAngles.z < 180)
         {
             playerRB.AddForce(Vector2.left * transform.eulerAngles.z * 0.1f);
+            playerRB.AddForce(Vector2.up * transform.eulerAngles.z * 0.01f);
+            transform.Rotate(-rotationAngle, 1f * Time.deltaTime);
         }
     }
 }
