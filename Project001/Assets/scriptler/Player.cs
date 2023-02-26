@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
@@ -19,6 +20,8 @@ public class Player : MonoBehaviour
     private Vector2 moveInput;
 
     private Vector3 rotationAngle;
+
+    [SerializeField] private InputActionReference VerticalControls;
 
     void Awake()
     {
@@ -53,9 +56,7 @@ public class Player : MonoBehaviour
 
     public void inputManager()
     {
-        moveInput.x = Input.GetAxisRaw("Horizontal");
-        
-        moveInput.y = Input.GetAxisRaw("Vertical");
+        moveInput = VerticalControls.action.ReadValue<Vector2>(); 
     }
 
     public void engineController()
