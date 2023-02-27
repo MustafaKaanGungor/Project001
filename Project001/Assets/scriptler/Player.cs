@@ -7,6 +7,8 @@ public class Player : MonoBehaviour
 {
     public GameObject playerObject;
 
+    public GameObject gun;
+
     public Rigidbody2D playerRB;
     
     public bool engine;
@@ -19,13 +21,21 @@ public class Player : MonoBehaviour
 
     private Vector2 moveInput;
 
+    private Vector2 pointerInput;
+
     private Vector3 rotationAngle;
 
-    [SerializeField] private InputActionReference VerticalControls;
+    [SerializeField] private InputActionReference wasdControls;
+
+    [SerializeField] private InputActionReference pointerPosition;
+
+    private gunControl weaponParent;
 
     void Awake()
     {
 		playerRB = GetComponent<Rigidbody2D>();
+
+        weaponParent = GetComponentInChildren<gunControl>();
     }
 
     void Start()
@@ -41,6 +51,17 @@ public class Player : MonoBehaviour
 
         inputManager();
 
+        pointerInput = GetPointerInput();
+
+        weaponParent.PointerPosition = pointerInput;
+
+    }
+
+    private Vector2 GetPointerInput()
+    {
+        Vector3 mousePos = pointerPosition.action.ReadValue<Vector2>();
+        mousePos.z = Camera.main.nearClipPlane;
+        return Camera.main.ScreenToWorldPoint(mousePos);
     }
 
     void FixedUpdate()
@@ -56,7 +77,7 @@ public class Player : MonoBehaviour
 
     public void inputManager()
     {
-        moveInput = VerticalControls.action.ReadValue<Vector2>(); 
+        moveInput = wasdControls.action.ReadValue<Vector2>(); 
     }
 
     public void engineController()

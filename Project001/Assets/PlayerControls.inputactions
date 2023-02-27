@@ -6,7 +6,7 @@
             "id": "6850bfe2-668d-46ca-b244-e4359e379a1d",
             "actions": [
                 {
-                    "name": "VerticalControl",
+                    "name": "wasdControl",
                     "type": "Value",
                     "id": "4731bc49-753b-4dc9-8b6d-aa84f068c8ba",
                     "expectedControlType": "Vector2",
@@ -67,6 +67,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "PointerPosition",
+                    "type": "Value",
+                    "id": "6554a946-51f2-4e09-a68f-7de333373bd8",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -165,7 +174,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "VerticalControl",
+                    "action": "wasdControl",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -176,7 +185,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "VerticalControl",
+                    "action": "wasdControl",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -187,7 +196,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "VerticalControl",
+                    "action": "wasdControl",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -198,7 +207,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "VerticalControl",
+                    "action": "wasdControl",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -209,9 +218,20 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "VerticalControl",
+                    "action": "wasdControl",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "09f6d6be-92a1-4971-b2c9-4b3ce5cabe72",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PointerPosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
