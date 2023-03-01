@@ -170,6 +170,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PointerPosition: {x: 352, y: 3.76}
   gun: {fileID: 196883752}
+  rotLim: 20
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -763,7 +764,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -207341228, guid: 2da68915b0a95f74b8b790d891206559, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
