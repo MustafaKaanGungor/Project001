@@ -23,7 +23,7 @@ public class gunControl : MonoBehaviour
 
     // Update is called once per frame
     void Update() 
-    {
+    {/*
         LimitRot();
 
         Quaternion targetRot = Quaternion.LookRotation(PointerPosition - transform.localRotation);
@@ -31,7 +31,7 @@ public class gunControl : MonoBehaviour
         transform.localRotation = Quaternion.Slerp(transform.localRotation, targetRot, 10f * Time.deltaTime);
         
         //transform.right = (PointerPosition-(Vector2)transform.position).normalized;
-    
+    */
     }
 
     private void LimitRot()
