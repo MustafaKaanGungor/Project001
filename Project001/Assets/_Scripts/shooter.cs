@@ -9,6 +9,14 @@ public class shooter : MonoBehaviour
 
     public GameObject gun;
 
+    private Vector3 dispersed;
+
+    [SerializeField] private float rateOfFire = 0.2f;
+    [SerializeField] private float lastShootTime;
+
+    private float currentDispersion;
+    [SerializeField] private float dispersionAmount;
+
     
     [SerializeField] private Transform gunPoint;
     [SerializeField] private GameObject bullet;
@@ -27,6 +35,8 @@ public class shooter : MonoBehaviour
     void Update()
     {
         shoot();
+
+        transform.up = (PointerPosition-(Vector2)transform.position).normalized;
         
     }
 
@@ -37,7 +47,14 @@ public class shooter : MonoBehaviour
     {
         if( Input.GetMouseButton(0))
         {
-            var hit = Physics2D.Raycast(gunPoint.position, transform.up, weaponRange);
+            dispersion();
+            if(Time.time > rateOfFire + lastShootTime)
+            {
+
+                lastShootTime = Time.time;
+
+                dispersed = new Vector3(0,currentDispersion,0);
+            var hit = Physics2D.Raycast(gunPoint.position, transform.up + dispersed, weaponRange);
 
             var trail = Instantiate(bullet, gunPoint.position, transform.rotation);
 
@@ -52,6 +69,13 @@ public class shooter : MonoBehaviour
                 var endPosition = gunPoint.position + transform.up * weaponRange;
                 trailScript.setTargetPos(endPosition);
             }
+
+            }
         }
+    }
+
+    void dispersion()
+    {
+        currentDispersion = ((Random.value - 0.5f) / 2) * dispersionAmount;
     }
 }

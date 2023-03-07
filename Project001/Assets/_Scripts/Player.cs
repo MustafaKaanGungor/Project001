@@ -5,37 +5,39 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    public GameObject playerObject;
+    [Header("Scripts")]
+    private shooter shooterScript;
 
-    public GameObject gun;
 
+    [Header("GameObjects")]
+    [SerializeField] private GameObject playerObject;
+    [SerializeField] private GameObject landingGear;
+
+
+    [Header("Components")]
     public Rigidbody2D playerRB;
-    
+
+
+    [Header("Engine Parameters")] 
     public bool engine;
-
     public float liftingEnginePower;
-
     public float verticalEnginePower;
-
     public float horizontalEnginePower;
 
-    private Vector2 moveInput;
 
+    [Header("Input")]
+    [SerializeField] private InputActionReference wasdControls;
+    [SerializeField] private InputActionReference pointerPosition;
+    private Vector2 moveInput;
     private Vector2 pointerInput;
 
     private Vector3 rotationAngle;
-
-    [SerializeField] private InputActionReference wasdControls;
-
-    [SerializeField] private InputActionReference pointerPosition;
-
-    private gunControl weaponParent;
 
     void Awake()
     {
 		playerRB = GetComponent<Rigidbody2D>();
 
-        weaponParent = GetComponentInChildren<gunControl>();
+        shooterScript = GetComponentInChildren<shooter>();
     }
 
     void Start()
@@ -49,12 +51,32 @@ public class Player : MonoBehaviour
     {
         engineController();
 
+        gearController();
+
         inputManager();
+    }
+
+    void FixedUpdate()
+    {
+        if(engine == true)
+        {
+            liftingEngineThrust();
+
+            verticalControl();
+
+            horizontalControl();
+
+            horizontalMovement();
+        }
+    }
+
+    public void inputManager()
+    {
+        moveInput = wasdControls.action.ReadValue<Vector2>(); 
 
         pointerInput = GetPointerInput();
 
-        weaponParent.PointerPosition = pointerInput;
-
+        shooterScript.PointerPosition = pointerInput;
     }
 
     private Vector2 GetPointerInput()
@@ -64,44 +86,29 @@ public class Player : MonoBehaviour
         return Camera.main.ScreenToWorldPoint(mousePos);
     }
 
-    void FixedUpdate()
-    {
-        liftingEngineThrust();
-
-        verticalControl();
-
-        horizontalControl();
-
-        horizontalMovement();
-    }
-
-    public void inputManager()
-    {
-        moveInput = wasdControls.action.ReadValue<Vector2>(); 
-    }
-
     public void engineController()
     {
-        //TODO: Motor açıp kapamayı tek tuşa indirge
         //TODO: Motorun açılışına gecikme ekle https://www.youtube.com/watch?v=Qt5KPNmKglM
         //TODO: Motor açılırken pilotların check konuşmalarını ekle
-        if(Input.GetKey(KeyCode.I)) 
+        if(Input.GetKeyDown(KeyCode.I)) 
         {
-            engine = true;
+            engine = !engine;
         }
-        if(Input.GetKey(KeyCode.O))
+    }
+
+    public void gearController()
+    {
+        //TODO: gearın açılışına gecikme ekle https://www.youtube.com/watch?v=Qt5KPNmKglM
+         if(Input.GetKeyDown(KeyCode.K)) 
         {
-           engine = false;
+            landingGear.SetActive(!landingGear.activeSelf);
         }
     }
 
     public void liftingEngineThrust()
     {
         //TODO: Motor hasarına göre motor gücünü azaltma ekle
-        if(engine == true)
-        {
         playerRB.AddForce(Vector2.up * liftingEnginePower);
-        }
     }
 
     public void verticalControl()
