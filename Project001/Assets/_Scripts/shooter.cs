@@ -62,6 +62,10 @@ public class shooter : MonoBehaviour
 
             if(hit.collider != null)
             {
+                if(hit.collider.gameObject.TryGetComponent<Health>(out var health))
+                {
+                    health.Damage(1);
+                }
                 trailScript.setTargetPos(hit.point);
             }
             else

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class Player : MonoBehaviour
     public float liftingEnginePower;
     public float verticalEnginePower;
     public float horizontalEnginePower;
+    public float horizontalSpeed;
 
 
     [Header("Input")]
@@ -30,6 +32,13 @@ public class Player : MonoBehaviour
     [SerializeField] private InputActionReference pointerPosition;
     private Vector2 moveInput;
     private Vector2 pointerInput;
+    private float rotationSmoother;
+
+    [Header("UI")]
+    public TextMeshProUGUI engineDisplay;
+    public TextMeshProUGUI gearDisplay;
+    public TextMeshProUGUI ammoDisplay;
+
 
     private Vector3 rotationAngle;
 
@@ -38,6 +47,7 @@ public class Player : MonoBehaviour
 		playerRB = GetComponent<Rigidbody2D>();
 
         shooterScript = GetComponentInChildren<shooter>();
+
     }
 
     void Start()
@@ -54,6 +64,8 @@ public class Player : MonoBehaviour
         gearController();
 
         inputManager();
+
+        UIupdater();
     }
 
     void FixedUpdate()
@@ -85,6 +97,11 @@ public class Player : MonoBehaviour
         mousePos.z = Camera.main.nearClipPlane;
         return Camera.main.ScreenToWorldPoint(mousePos);
     }
+
+    void UIupdater()
+    {
+        engineDisplay.text = engine.ToString();
+    }    
 
     public void engineController()
     {
@@ -126,13 +143,19 @@ public class Player : MonoBehaviour
 
     public void horizontalControl()
     {
-        if(moveInput.x > 0)
-        {
-            transform.Rotate(-rotationAngle, horizontalEnginePower * Time.deltaTime);
-        }
         if(moveInput.x < 0)
         {
-            transform.Rotate(rotationAngle, horizontalEnginePower * Time.deltaTime);
+            rotationSmoother++;
+            transform.Rotate(rotationAngle, horizontalEnginePower * rotationSmoother * Time.deltaTime);
+        }
+        if(moveInput.x > 0)
+        {
+            rotationSmoother--;
+            transform.Rotate(rotationAngle, horizontalEnginePower * rotationSmoother * Time.deltaTime);
+        }
+        if(moveInput.x == 0)
+        {
+            rotationSmoother = 0;
         }
     }
 
@@ -140,13 +163,13 @@ public class Player : MonoBehaviour
     {
         if(transform.eulerAngles.z > 180)
         {
-            playerRB.AddForce(Vector2.left * (transform.eulerAngles.z - 360f) * 0.1f);
+            playerRB.AddForce(Vector2.left * (transform.eulerAngles.z - 360f) * 0.1f * horizontalSpeed);
             playerRB.AddForce(Vector2.up * (transform.eulerAngles.z - 360f) * 0.01f);
             transform.Rotate(rotationAngle, 1f * Time.deltaTime);
         }
         if(transform.eulerAngles.z < 180)
         {
-            playerRB.AddForce(Vector2.left * transform.eulerAngles.z * 0.1f);
+            playerRB.AddForce(Vector2.left * transform.eulerAngles.z * 0.1f * horizontalSpeed);
             playerRB.AddForce(Vector2.up * transform.eulerAngles.z * 0.01f);
             transform.Rotate(-rotationAngle, 1f * Time.deltaTime);
         }
